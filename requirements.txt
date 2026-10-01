@@ -5,3 +5,5 @@ nlp
 nltk
 google-genai
 os
+dotenv
+google
