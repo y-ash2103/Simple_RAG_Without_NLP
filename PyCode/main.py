@@ -15,12 +15,12 @@ def get_text(search):
 
 question = input("Ask your question: ")
 
-load_dotenv()
+load_dotenv()  #if we have .env in same folder so this will load it automatically othervise we have to pass the path to the load_dotenv function
 API_KEY= os.getenv('GEMINI_API_KEY')
 
 def Ask_Ai(question):
 
-    relevant_data = get_text(question)
+    relevant_data = get_text(question.lower)
 
     prompt = f"""
 You are an Apple Company AI bot that provides information
@@ -47,9 +47,13 @@ Rules:
 
     client = genai.Client(api_key=API_KEY)
 
-    response = client.models.generate_content(
+    response = client.models.generate_content_stream(
         model="gemini-2.5-flash",
         contents=prompt
     )
 
-    print(response.text)
+    for chunk in response:
+        print(chunk.text, end='', flush=True)
+    print()
+
+Ask_Ai(question)
