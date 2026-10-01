@@ -353,13 +353,7 @@ __pycache__/
 ## 1. Clone the repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
-```
-
-Then enter the project:
-
-```bash
-cd RAG_P1
+git clone https://github.com/y-ash2103/Simple_RAG_Without_NLP
 ```
 
 ---
