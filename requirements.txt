@@ -1,0 +1,7 @@
+numpy 
+pandas
+matplotlib
+nlp
+nltk
+google-genai
+os
