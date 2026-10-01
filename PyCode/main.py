@@ -1,26 +1,42 @@
 import os
+
 from google import genai
 from dotenv import load_dotenv
 
-def get_text(search):
-    relevent_data = ""
-    search=search.lower()
 
-    with open(f"../Complete_knowlade_base/data.txt","r") as file:
-        all_data=file.readlines()
+def get_text(search):
+
+    relevant_data = ""
+
+    search = search.lower()
+
+    with open("../Complete_knowlade_base/data.txt", "r", encoding="utf-8") as file:
+
+        all_data = file.readlines()
+
         for line in all_data:
+
             if search in line.lower():
-                relevent_data = relevent_data + line + '\n'
-    return relevent_data
+                relevant_data += line
+
+    return relevant_data
+
+
+# Load .env
+load_dotenv()
+
+API_KEY = os.getenv("GEMINI_API_KEY")
+
+if not API_KEY:
+    raise ValueError("GEMINI_API_KEY not found in .env")
+
 
 question = input("Ask your question: ")
 
-load_dotenv()  #if we have .env in same folder so this will load it automatically othervise we have to pass the path to the load_dotenv function
-API_KEY= os.getenv('GEMINI_API_KEY')
 
 def Ask_Ai(question):
 
-    relevant_data = get_text(question.lower)
+    relevant_data = get_text(question)
 
     prompt = f"""
 You are an Apple Company AI bot that provides information
@@ -29,13 +45,17 @@ about Apple products.
 Use the following knowledge base to answer the user's question.
 
 --- KNOWLEDGE BASE ---
+
 {relevant_data}
+
 --- END KNOWLEDGE BASE ---
 
 User Question:
+
 {question}
 
 Rules:
+
 1. Answer only using the information provided in the knowledge base.
 2. Do not make assumptions or invent information.
 3. If the answer cannot be found in the knowledge base, politely say
@@ -53,7 +73,10 @@ Rules:
     )
 
     for chunk in response:
-        print(chunk.text, end='', flush=True)
+        if chunk.text:
+            print(chunk.text, end="", flush=True)
+
     print()
+
 
 Ask_Ai(question)
